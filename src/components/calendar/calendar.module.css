@@ -1,0 +1,29 @@
+/* calendar.css */
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 столбцов для 7 дней недели */
+    gap: 1px; /* расстояние между ячейками */
+    background-color: #5ec89a; /* цвет фона сетки */
+    padding: 10px; /* отступы внутри контейнера */
+    border-radius: 8px; /* скругленные углы контейнера */
+  }
+
+  h2 {
+    margin-bottom: 10px;
+  }
+  
+  .day {
+    background-color: #fff; /* цвет фона ячеек */
+    padding: 20px; /* отступы внутри ячеек */
+    text-align: center; /* выравнивание текста по центру */
+    cursor: pointer; /* указатель мыши при наведении */
+    border-radius: 4px; /* скругленные углы ячеек */
+  }
+  
+  .day:hover {
+    background-color: #c1f3e0; /* цвет фона ячейки при наведении */
+  }
+  
+  .day:active {
+    background-color: #65f0c2; /* цвет фона ячейки при клике */
+  }
