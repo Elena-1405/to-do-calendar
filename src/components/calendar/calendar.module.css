@@ -1,11 +1,10 @@
-/* calendar.css */
 .calendar {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 столбцов для 7 дней недели */
-    gap: 1px; /* расстояние между ячейками */
-    background-color: #5ec89a; /* цвет фона сетки */
-    padding: 10px; /* отступы внутри контейнера */
-    border-radius: 8px; /* скругленные углы контейнера */
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background-color: #5ec89a;
+    padding: 10px;
+    border-radius: 8px;
   }
 
   h2 {
@@ -13,17 +12,17 @@
   }
   
   .day {
-    background-color: #fff; /* цвет фона ячеек */
-    padding: 20px; /* отступы внутри ячеек */
-    text-align: center; /* выравнивание текста по центру */
-    cursor: pointer; /* указатель мыши при наведении */
-    border-radius: 4px; /* скругленные углы ячеек */
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
   }
   
   .day:hover {
-    background-color: #c1f3e0; /* цвет фона ячейки при наведении */
+    background-color: #c1f3e0;
   }
   
   .day:active {
-    background-color: #65f0c2; /* цвет фона ячейки при клике */
+    background-color: #97e7cc;
   }
