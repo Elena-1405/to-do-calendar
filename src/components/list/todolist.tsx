@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { TodoItem } from '../item/todoitem';
 
 interface TodoListProps {
     date: Date;
-    todo: string;
+    todos: [];
     addTodo: (todo: ToDo) => void;
     removeTodo: (index: number) => void;
 }
@@ -12,7 +13,7 @@ interface ToDo {
     description: string;
 }
 
-export const TodoList: React.FC<TodoListProps> = ({date, todo, addTodo, removeTodo}) => {
+export const TodoList: React.FC<TodoListProps> = ({date, todos, addTodo, removeTodo}) => {
     const [newTodo, setNewTodo] = useState<ToDo>({title:'', description: ''});
 
     const handleAddTodo = () => {
@@ -27,13 +28,43 @@ export const TodoList: React.FC<TodoListProps> = ({date, todo, addTodo, removeTo
         }));
     };
 
+    const handleRemoveTodo = (index: number) => {
+        removeTodo(index);
+    };
+
     return (
         <div>
-            <h3>todo for {date.toDateString()}</h3>
+            <h3>To do for {date.toDateString()}</h3>
             <input 
                 type='text'
-                value={newTodo.title}/>
-            <button>Add</button>
+                name='title'
+                value={newTodo.title}
+                onChange={handleChange}
+                placeholder='title'
+                />
+            <input 
+                type='text'
+                name='description'
+                value={newTodo.description}
+                onChange={handleChange}
+                placeholder='description'
+                />
+            <button
+                onClick={handleAddTodo}
+                >
+                    Add
+            </button>
+             <ul>
+                {todos.map((todo: string, index: number) => (
+                    <li key={index}>
+                        <TodoItem
+                          key={index}
+                         item={todo}
+                         onRemove={(() => handleRemoveTodo(index))}
+                        />
+                    </li>
+                ))}
+            </ul> 
         </div>
     )
 }
