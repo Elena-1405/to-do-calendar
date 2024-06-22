@@ -9,16 +9,15 @@ interface TodoListProps {
 }
 
 export interface ToDo {
-    title: string;
-    description: string;
+    title: string
 }
 
-export const TodoList: React.FC<TodoListProps> = ({date, todos, addTodo, removeTodo}) => {
-    const [newTodo, setNewTodo] = useState<ToDo>({title:'', description: ''});
+export const TodoList: React.FC<TodoListProps> = ({ date, todos, addTodo, removeTodo }) => {
+    const [newTodo, setNewTodo] = useState<ToDo>({ title:'' });
 
     const handleAddTodo = () => {
         addTodo(newTodo);
-        setNewTodo({title:'', description: ''});
+        setNewTodo({ title:'' });
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,13 +41,6 @@ export const TodoList: React.FC<TodoListProps> = ({date, todos, addTodo, removeT
                 onChange={handleChange}
                 placeholder='title'
                 />
-            <input 
-                type='text'
-                name='description'
-                value={newTodo.description}
-                onChange={handleChange}
-                placeholder='description'
-                />
             <button
                 onClick={handleAddTodo}
                 >
@@ -59,7 +51,7 @@ export const TodoList: React.FC<TodoListProps> = ({date, todos, addTodo, removeT
                     <li key={index}>
                         <TodoItem
                           key={index}
-                          item={`${todo.title}: ${todo.description}` }
+                          item={`${todo.title}` }
                           onRemove={(() => handleRemoveTodo(index))}
                         />
                     </li>
