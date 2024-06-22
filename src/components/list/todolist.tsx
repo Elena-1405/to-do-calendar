@@ -3,12 +3,12 @@ import { TodoItem } from '../item/todoitem';
 
 interface TodoListProps {
     date: Date;
-    todos: [];
+    todos: ToDo[];
     addTodo: (todo: ToDo) => void;
     removeTodo: (index: number) => void;
 }
 
-interface ToDo {
+export interface ToDo {
     title: string;
     description: string;
 }
@@ -55,12 +55,12 @@ export const TodoList: React.FC<TodoListProps> = ({date, todos, addTodo, removeT
                     Add
             </button>
              <ul>
-                {todos.map((todo: string, index: number) => (
+                {todos.map((todo, index) => (
                     <li key={index}>
                         <TodoItem
                           key={index}
-                         item={todo}
-                         onRemove={(() => handleRemoveTodo(index))}
+                          item={`${todo.title}: ${todo.description}` }
+                          onRemove={(() => handleRemoveTodo(index))}
                         />
                     </li>
                 ))}
