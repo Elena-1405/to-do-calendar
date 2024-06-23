@@ -26,3 +26,7 @@
   .day:active {
     background-color: #97e7cc;
   }
+
+.hasTodos {
+    background-color: #6cb796;
+}

@@ -1,12 +1,15 @@
 import React from 'react';
+import { ToDo } from '../list/todolist';
 import styles from './calendar.module.css';
+
 
 export interface CalendarProps {
     selectedDate: Date;
+    todos: { [key: string]: ToDo[] };
     onDateClick: (date: Date) => void;
 }
 
-export const Calendar: React.FC<CalendarProps> = ({selectedDate, onDateClick}) => {
+export const Calendar: React.FC<CalendarProps> = ({selectedDate, todos, onDateClick}) => {
     const startOfMonth = (date: Date): Date => {
         return new Date(date.getFullYear(), date.getMonth(), 1)
     }
@@ -39,17 +42,25 @@ const start = startOfMonth(selectedDate);
 const end = endOfMonth(selectedDate);
 const days = eachDayOfInterval(start, end);
 
-return (
-    <div className={styles.calendar}>
-        <h2>{formatMonth(selectedDate)}</h2>
-        {days.map((day) => (
-            <div
-                className={styles.day}
+const dayElement = days.map((day) => {
+    const dayString = day.toISOString().split('T')[0];
+    const hasTodos = todos[dayString] && todos[dayString].length > 0;
+    const dayClassName = hasTodos ? `${styles.day} ${styles.hasTodos}` : styles.day;
+
+    return (
+        <div
+                className={dayClassName}
                 key={day.toString()}
                 onClick={() => onDateClick(day)}>
                     {formatDay(day)}
             </div>
-        ))}
+    );
+});
+
+return (
+    <div className={styles.calendar}>
+        <h2>{formatMonth(selectedDate)}</h2>
+        {dayElement}
     </div>
-)
-}
+);
+};

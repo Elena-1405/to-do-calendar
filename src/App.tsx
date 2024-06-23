@@ -30,7 +30,7 @@ function App() {
   }
   return (
     <>
-      <Calendar selectedDate={selectedDate} onDateClick={toggleModal} />
+      <Calendar selectedDate={selectedDate} onDateClick={toggleModal} todos={todos}/>
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
         <TodoList 
