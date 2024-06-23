@@ -18,8 +18,14 @@ interface FormData {
 }
 
 export const TodoList: React.FC<TodoListProps> = ({ date, todos, addTodo, removeTodo }) => {
-    //const [newTodo, setNewTodo] = useState<ToDo>({ title:'' });
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+
+    const formattedDate = new Intl.DateTimeFormat('ru-Ru',{
+        weekday: 'short',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    }).format(date);
 
     const onSubmit: SubmitHandler<FormData> = data => {
         addTodo({
@@ -28,20 +34,13 @@ export const TodoList: React.FC<TodoListProps> = ({ date, todos, addTodo, remove
         reset();
     };
 
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const { name, value } = e.target;
-    //     setNewTodo(prevState => ({
-    //         ...prevState, [name]: value
-    //     }));
-    // };
-
     const handleRemoveTodo = (index: number) => {
         removeTodo(index);
     };
 
     return (
         <div>
-            <h3>To do for {date.toDateString()}</h3>
+            <h3>Задачи на {formattedDate}</h3>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
             <input 
