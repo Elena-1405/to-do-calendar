@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, CalendarProps } from '../src/components/calendar/calendar';
 import { TodoList, ToDo} from '../src/components/list/todolist';
 import { Modal } from '../src/components/modal/modal';
@@ -13,6 +13,18 @@ function App() {
   });
   const [currentUser, setCurrentUser] = useState<string>('user1');
   const [ isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+
+  useEffect(() => {
+    localStorage.setItem(`todos_${currentUser}`, JSON.stringify(todos));
+  }, [todos, currentUser]);
+
+  useEffect(() => {
+    const savedTodos = localStorage.getItem(`todos_${currentUser}`);
+    if (savedTodos) {
+      setTodos(JSON.parse(savedTodos));
+    }
+  }, [currentUser]);
 
   const addTodo = (date: Date, todo: ToDo) => {
     const dateString = date.toISOString().split('T')[0];
@@ -41,7 +53,9 @@ function App() {
   }
 
   const handleUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCurrentUser(e.target.value);
+    const newUser = e.target.value;
+    setCurrentUser(newUser);
+    localStorage.setItem('currentUser', newUser);
   };
 
   return (
@@ -59,6 +73,7 @@ function App() {
         <Modal onClose={() => setIsModalOpen(false)}>
         <TodoList 
           date={selectedDate} 
+          //userId={currentUser}
           todos={todos[currentUser][selectedDate.toISOString().split('T')[0]] || []} 
           addTodo={(todo) => addTodo(selectedDate, todo)} 
           removeTodo={(index) => removeTodo(selectedDate, index)}/>
