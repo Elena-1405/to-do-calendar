@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, CalendarProps } from '../src/components/calendar/calendar';
 import { TodoList, ToDo} from '../src/components/list/todolist';
 import { Modal } from '../src/components/modal/modal';
+import { startOfMonth, endOfMonth, eachDayOfInterval } from '../src/utils/dates';
+import isDayOff from 'isdayoff';
 
 const users = ['user1', 'user2'];
 
@@ -13,6 +15,7 @@ function App() {
   });
   const [currentUser, setCurrentUser] = useState<string>('user1');
   const [ isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [ holidays, setHolidays ] = useState<{ [key: string]: boolean}>({});
 
 
   useEffect(() => {
@@ -25,6 +28,25 @@ function App() {
       setTodos(JSON.parse(savedTodos));
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    const fetchHolidays = async () => {
+      const start = startOfMonth(selectedDate);
+      const end = endOfMonth(selectedDate);
+      const days = eachDayOfInterval(start, end);
+      const holidaysData: { [key: string]: boolean } = {};
+
+      for (const day of days) {
+        const dayString = day.toISOString().split('T')[0];
+        const isHoliday = await isDayOff(dayString, { country: 'ru' });
+        holidaysData[dayString] = isHoliday;
+      }
+
+      setHolidays(holidaysData);
+    };
+
+    fetchHolidays();
+  }, [selectedDate]);
 
   const addTodo = (date: Date, todo: ToDo) => {
     const dateString = date.toISOString().split('T')[0];
@@ -68,15 +90,20 @@ function App() {
         </option>
       ))}
     </select>
-      <Calendar selectedDate={selectedDate} onDateClick={toggleModal} todos={todos[currentUser]}/>
+      <Calendar 
+        selectedDate={selectedDate} 
+        onDateClick={toggleModal} 
+        todos={todos[currentUser]}
+        holidays={holidays}
+      />
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
-        <TodoList 
-          date={selectedDate} 
-          //userId={currentUser}
-          todos={todos[currentUser][selectedDate.toISOString().split('T')[0]] || []} 
-          addTodo={(todo) => addTodo(selectedDate, todo)} 
-          removeTodo={(index) => removeTodo(selectedDate, index)}/>
+          <TodoList 
+            date={selectedDate}
+            todos={todos[currentUser][selectedDate.toISOString().split('T')[0]] || []} 
+            addTodo={(todo) => addTodo(selectedDate, todo)} 
+            removeTodo={(index) => removeTodo(selectedDate, index)}
+          />
       </Modal>
       )}  
     </>
